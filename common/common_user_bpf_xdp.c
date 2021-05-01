@@ -2,6 +2,7 @@
 #include <string.h>     /* strerror */
 #include <net/if.h>     /* IF_NAMESIZE */
 #include <stdlib.h>     /* exit(3) */
+#include <stdio.h>
 #include <errno.h>
 
 #include <bpf/bpf.h>
@@ -346,12 +347,10 @@ int check_map_fd_info(const struct bpf_map_info *info,
 }
 
 int open_bpf_map_file(const char *pin_dir,
-		      const char *mapname,
-		      struct bpf_map_info *info)
+		      const char *mapname)
 {
 	char filename[PATH_MAX];
 	int err, len, fd;
-	__u32 info_len = sizeof(*info);
 
 	len = snprintf(filename, PATH_MAX, "%s/%s", pin_dir, mapname);
 	if (len < 0) {
@@ -365,15 +364,6 @@ int open_bpf_map_file(const char *pin_dir,
 			"WARN: Failed to open bpf map file:%s err(%d):%s\n",
 			filename, errno, strerror(errno));
 		return fd;
-	}
-
-	if (info) {
-		err = bpf_obj_get_info_by_fd(fd, info, &info_len);
-		if (err) {
-			fprintf(stderr, "ERR: %s() can't get info - %s\n",
-				__func__,  strerror(errno));
-			return EXIT_FAIL_BPF;
-		}
 	}
 
 	return fd;

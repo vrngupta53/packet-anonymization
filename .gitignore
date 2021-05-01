@@ -1,0 +1,4 @@
+.vscode/
+src/prog_kern.ll
+src/prog_kern.o
+src/prog_userspace
