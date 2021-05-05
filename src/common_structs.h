@@ -13,6 +13,8 @@ typedef struct anonymization_config {
     bool preserve_prefix; 
     bool anonymize_mac_in_arphdr; 
     bool anonymize_ipv4_in_arphdr; 
+    __u32 src_ip_mask_lengths; 
+    __u32 dest_ip_mask_lengths; 
     __u32 random_salt; 
 } anonymization_config;
 
